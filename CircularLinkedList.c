@@ -29,7 +29,7 @@ char* gettime()
 
 void p(char *enex,char *fname){
 //	printf("\n\n**%s**\n\n",*fname);
-
+/*
 	int len = 0,i;
 	char *d_fname;
 	 d_fname= fname;
@@ -53,16 +53,16 @@ printf("  ");
 	}
 	
 	
-	printf("\n");
+	printf("\n");*/
 }
 
 void paddr(char *pname ,node *dummy_p){
-	printf("\n**Address of ");
+	/*printf("\n**Address of ");
 		while(*pname!='\0'){
 		printf("%c",*pname);
 		pname++;
 	}
-	printf(" is : %p **\n",dummy_p);	
+	printf(" is : %p **\n",dummy_p);*/	
 }
 
 int node_Count = 0;
@@ -108,6 +108,8 @@ void dispNode(){
 		printf("\n%d ) ",node_pos);
 		printf("Data at node %d",current->data);
 		printf(" --> %s",current->buffer);
+		printf(" at address ");
+		paddr("current",current);
 		current = current->next;
 		printf("\n===================================================================");	
 	}
@@ -204,7 +206,6 @@ void deleteAtPos(int delPos){
 	if (total_node==1){
 		free(current);
 		head=NULL;
-		
 	}
 	else{
 		for (i=0;i<total_node;i++){
@@ -215,20 +216,22 @@ void deleteAtPos(int delPos){
 		if (delPos == 1){//Deleting first node
 			printf("\nData at node %d",current->data);
 			printf(" --> %s will  be deleted...",current->buffer);
-			
+			paddr("current",current);
 			current=current->next;
+			paddr("current",current);
 			current->prev = head->prev;
 			head->prev->next=current;
 			head=current;
+			paddr("head",head);
 			
-			free(current);
+			//free(current);
 		
 		}
 		else if(delPos == total_node){//Deleting last node
 			
 			current->prev->next = head;
 			head->prev=current->prev;
-			free(current);
+			//free(current);
 			printf("\nData at node %d",current->data);
 			printf(" --> %s willbe deleted...",current->buffer);
 		
