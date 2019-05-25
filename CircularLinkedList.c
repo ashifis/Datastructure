@@ -76,77 +76,21 @@ void createNode(){
 	temp->data = ++ node_Count;
 	printf("\n%d Node created",node_Count);
 	if(current == NULL){
-		
-		
 		head = temp;
 		current = temp;
 		current->next = temp;
 		current->prev = temp;
-		
-	/*	for (t=0;t<5555555;t++){
-			printf("");
-		}
-		temp2 = (node * )malloc(sizeof(node));
-		
-		
-		strcpy(temp2->buffer,gettime());
-		temp2->data = ++ node_Count;
-		paddr("temp",temp);
-		paddr("temp2",temp2);
-		
-		current = temp;
-		paddr("current",current);
-		
-		
-		head = current;
-		paddr("head",head);
-		
-		current->next = temp2;
-		paddr("current->next = temp2",current->next);
-		
-		temp2->prev = current;
-		paddr("temp2->prev = current",temp2->prev);
-		
-		current->prev =  temp2;
-		paddr("current->prev =  temp2",current->prev);
-		
-		temp2->next = current;
-		
-		paddr("temp2->next = current",temp2->next);
-		current = current->next;
-		paddr("current = current->next",current);
-		printf("==========================================");
-		current = head;
-		paddr("current->prev",current->prev);
-		paddr("current",current);
-		paddr("current->next",current->next);
-		printf("Data at node %d",current->data);
-		printf(" --> %s",current->buffer);
-		
-		current = current->next;
-		paddr("current",current);
-		paddr("current->prev",current->prev);
-		paddr("current",current);
-		paddr("current->next",current->next);
-		printf("Data at node %d",current->data);
-		printf(" --> %s",current->buffer);
-		
-		*/
-			
 	}
 	else{
 		for (current = head;current->next!=head;current = current->next){
-		
-		paddr("head",head);
+		/*paddr("head",head);
 		paddr("current",current);
-		paddr("current->next",current->next);
+		paddr("current->next",current->next);*/
 	}
-		
 		current->next = temp;
 		temp->prev = current;
 		temp->next = head;
-		head->prev=temp;
-		
+		head->prev=temp;	
 	p("Exit","createNode");	
 	}
 	
@@ -158,20 +102,37 @@ void dispNode(){
 	int node_pos= 0;
 	
 	printf("\n===================================================================");
-	while (current->next!= head ){
+	
+	do{
 		node_pos++;
 		printf("\n%d ) ",node_pos);
 		printf("Data at node %d",current->data);
 		printf(" --> %s",current->buffer);
-		/*paddr("current->prev",current->prev);
+		/*paddr("head",head);
+		paddr("current->prev",current->prev);
 		paddr("current",current);
 		paddr("current->next",current->next);*/
 		current = current->next;
 		printf("\n===================================================================");	
-	}
-	printf("\nData at node %d",current->data);
-		printf(" --> %s",current->buffer);
+
 		
+	}
+	while(current!= head );
+/*	while (current->next!= head ){
+		node_pos++;
+		printf("\n%d ) ",node_pos);
+		printf("Data at node %d",current->data);
+		printf(" --> %s",current->buffer);
+		paddr("current->prev",current->prev);
+		paddr("current",current);
+		paddr("current->next",current->next);
+		current = current->next;
+		printf("\n===================================================================");	
+	}
+	printf("\n%d ) ",node_pos);
+		printf("Data at node %d",current->data);
+		printf(" --> %s",current->buffer);
+*/			
 p("Exit","dispNode");	
 }	
 	
@@ -182,11 +143,11 @@ int get_node_Count(){
 	p("Enter","get_node_Count");
 	int node_count_act = 0;	
 	current = head;
-	
-	while (current!= NULL ){
+	do{
 		node_count_act ++;
-	current = current->next;	
+		current=current->next;
 	}
+	while (current!=head );
 	p("Exit","get_node_Count");
 	return node_count_act;
 }
@@ -215,30 +176,30 @@ void inserAtPos(int pos){
 		paddr("current",current);
 		paddr("current->next",current->next);*/
 		if (pos == 1){
-			head = temp;
-			temp->prev = NULL;
 			temp->next = current;
+			temp->prev = current->prev;
+			current->prev->next = temp;
 			current->prev = temp;
+			head = temp;
 			printf("\nData at node %d",current->data);
-			printf(" --> %s",current->buffer);
-		
-			
+			printf(" --> %s",current->buffer);	
 		}
 		else if(pos == total_node){
-			temp->next = NULL;
-			current->next = temp;
-			temp->prev = current;
+			
+			head->prev->next = temp;
+			temp->prev = head->prev;
+			temp->next =  head;
+			head->prev = temp;
 			printf("\nData at node %d",current->data);
 			printf(" --> %s",current->buffer);
 		
 		}
 		else{
-		current->prev->next = temp;
-		temp->prev = current->prev;
-		temp->next = current;
-		current->prev = temp;
-		printf("\nData at node %d",current->data);
-		printf(" --> %s",current->buffer);
+		
+		current->next->prev = temp;
+		temp->next = current->next;
+		temp->prev = current;
+		current->next = temp;
 		
 		}
 
@@ -257,9 +218,7 @@ void deleteAtPos(int delPos){
 	
 	int total_node,i=0;
 	total_node = get_node_Count();
-	
-	
-	
+
 	p("Enter","deleteAtPos");
 	if(delPos <= total_node){
 	current = head;	
@@ -349,16 +308,18 @@ int main(){
 		paddr("head",head);
 	}
 	dispNode();
-	/*printf("\nEnter position to insert:");
+	
+	while(1){
+		printf("\nEnter position to insert:");
 	scanf("%d",&insert_pos);
-	dispNode();
-		
 	if ( insert_pos > 0){
 		inserAtPos(insert_pos);
 		dispNode();
 	}
 	fflush(stdin);
 	
+	}
+	/*
 	while(1){
 		printf("\nEnter position to delete:");
 	scanf("%d",&delete_pos);
